@@ -1,6 +1,6 @@
 <%- include ('header') -%> 
 <style>
-  [type='checkbox']:checked + .lead {
+  [type='checkbox']:checked ~ .lead {
     text-decoration: line-through !important;
     color: gray;
   }
@@ -30,9 +30,12 @@
             <h1 class="card-heading text-center"><%= title%></h1>
             <div class="mb-3">
               <% tasks.forEach((task) => { %>
-              <div class="flex">
-                <input type="checkbox" />
-                <p class="lead"><%= task %></p>
+              <div>
+                <form action="/delete" method="POST" class="flex">
+                  <input type="checkbox" name="checkbox" value=<%= task._id %> onChange="this.form.submit()"/>
+                  <p class="lead"><%= task.name %></p>
+                  <input type="hidden" name="hidden" value="<%= title %>">
+                </form>
               </div>
               <% }) %>
             </div>
@@ -43,12 +46,13 @@
                   name="task"
                   class="form-control"
                   placeholder="Enter task"
+                  autocomplete="off"
                 />
               </div>
               <div class="form-group">
                 <button
                   type="submit"
-                  value= <%= title %> 
+                  value= '<%= title %>'
                   class="btn btn-primary btn-block rounded"
                   name= 'button'
                 >Add Task</button>
